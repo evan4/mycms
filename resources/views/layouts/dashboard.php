@@ -246,7 +246,7 @@
         </main>
       </div>
     </div>
-<script src="/js/vendors/jquery-3.2.1.slim.min.js"></script>
+<script src="/js/vendors/jquery-3.3.1.min.js"></script>
 <script src="/js/vendors/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 </body>

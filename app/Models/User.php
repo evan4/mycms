@@ -7,9 +7,17 @@ use Exception;
 
 class User
 {
+    private
+        $db;
+
     public function __construct()
     {
-     
-       new Db();
+        $this->db = new Db('users');
+        
+    }
+
+    public function getUser($data)
+    {
+        return $this->db->select($data);
     }
 }

@@ -21,7 +21,7 @@ jQuery(function($) {
     }
 
     $('#form-login').on('submit', function (e) {
-        result.hide();
+        result.empty();
 
         var fValid;
         fValid = true;
@@ -36,17 +36,32 @@ jQuery(function($) {
             })
             .done(function (res) {
                 console.log(res);
-                if (res.error) {
-                    result.show().find('li').text(res.error);
+                if (res) {
+                    output(res);
                 }
             })
-            .fail(function () {
-                result.show().find('li').text('Произошла ошибка. Попробуйте еще раз');
+            .fail(function (error) {
+                let res = {
+                    'error': 'Произошла ошибка. Попробуйте еще раз'
+                }
+                output(res);
             });
         }
 
        e.preventDefault();
     });
 
+    function output(data) {
+        let list =  '<ul class="list-group mb-2">';
+
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                const element = data[key];
+                list += '<li class="list-group-item list-group-item-danger">'+element+'</li>';
+            }
+        }
+        list += '</ul>';
+        result.append(list);
+    }
 
 });

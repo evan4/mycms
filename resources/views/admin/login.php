@@ -33,12 +33,9 @@
 			<a href="/">back to home page</a>
 		</p>
 	</form>
+	
 	<div class="row">
-		<div class="result col-12">
-			<ul class="list-group mb-2">
-				<li class="list-group-item list-group-item-danger"></li>
-			</ul>
-		</div>
+		<div class="result col-12"></div>
 	</div>
 
 </div>

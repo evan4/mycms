@@ -17,7 +17,7 @@ class AdminController extends Controller
 
         $session->startSession();
 
-        if(!$this->session->exists('user')) redirect('/login');
+        if(!$session->exists('user')) redirect('/login');
 
         $meta = [
             'title' => 'Dashboard'
@@ -59,28 +59,42 @@ class AdminController extends Controller
         $session->startSession();
         $PostArgs = filter_input_array(INPUT_POST);
         $data = [];
-        $error = '';
+        $error = [];
         
         if(isset($PostArgs['csrf'])){
             if ( !hash_equals($session->get('csrf'), $PostArgs['csrf']) ) {
-                $error = 'Ошибка токена';
+                $error['token'] = 'Ошибка токена';
             }
         }else{
-            $error = 'Ошибка токена';
+            $error['token'] = 'Ошибка токена';
         }
         
-        if( $error  ){
-            echo $error;
+        if( $error ){
+            echo json_encode($error);
             die();
         }
 
-        
         $data['email'] = $this->email($PostArgs['email']);
+
+        if(!$data['email']){
+            $error['email'] = 'Email некоректен';
+            die();
+        }
+
         $data['password'] = $this->password($PostArgs['password']);
+
+        //echo json_encode($data);
+
+        $user = new User();
         
-        echo json_encode($data);
-      
-        //$this->session->set('user', 'john');
+        $res = $user->getUser($data);
+
+        if($res){
+           $session->set('user', 'john'); 
+           redirect('/admin');
+        }else{
+            
+        }
         
     }
 

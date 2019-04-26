@@ -21,6 +21,8 @@ jQuery(function($) {
     }
 
     $('#form-login').on('submit', function (e) {
+        e.preventDefault();
+
         result.empty();
 
         var fValid;
@@ -36,9 +38,12 @@ jQuery(function($) {
             })
             .done(function (res) {
                 console.log(res);
-                if (res) {
-                    output(res);
+                
+                if (!Object.keys(res).length) {
+                    console.log(Object.keys(res).length);
+                    window.location ='/admin';
                 }
+                output(res);
             })
             .fail(function (error) {
                 let res = {
@@ -47,8 +52,6 @@ jQuery(function($) {
                 output(res);
             });
         }
-
-       e.preventDefault();
     });
 
     function output(data) {

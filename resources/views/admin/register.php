@@ -2,7 +2,11 @@
 
 	<form id="form-login" class="form-signin" action="" method="post">
 		<div class="text-center mb-4">
-			<h1 class="h3 mb-3 font-weight-normal">Login</h1>
+			<h1 class="h3 mb-3 font-weight-normal">Sing up</h1>
+			<p>Build form controls with floating labels via the
+				<code>:placeholder-shown</code> pseudo-element.
+				<a href="https://caniuse.com/#feat=css-placeholder-shown">Works in latest Chrome, Safari, and Firefox.</a>
+			</p>
 		</div>
 
 		<div class="form-group">
@@ -23,9 +27,9 @@
 			</label>
 		</div>
 
-		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
+		<input class="btn btn-lg btn-primary btn-block" type="submit">Sign in</input>
 
-		<p>
+		<p class="text-center">
 			<a href="/">back to home page</a>
 		</p>
 	</form>

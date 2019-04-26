@@ -159,7 +159,7 @@ class Session {
         session_regenerate_id($deleteOldSession);
 	}
 
-    function destroy()
+    public function destroy()
     {
 		if ($this->getIsActive()) {
 
@@ -184,6 +184,7 @@ class Session {
                     );
                 }
             }
+            $this->clear();
 		}
     }
 

@@ -4,22 +4,22 @@ namespace Mycms;
 
 class Controller
 {
-    public function text(String $text)
+    public function text($text)
     {
        return filter_var( $text, FILTER_SANITIZE_SPECIAL_CHARS);
     }
-    public function email($email)
+    
+    public function checkEmail($email)
     {
-
-        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-        if ($email) {
-            return filter_var($email, FILTER_SANITIZE_EMAIL);
+        $filteredEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
+        if ($filteredEmail) {
+            return filter_var($filteredEmail, FILTER_SANITIZE_EMAIL);
         }else{
             return null;
         }
     }
 
-    public function password(String $text)
+    public function password($text)
     {
         $pass = $this->text( $text );
 
@@ -32,11 +32,9 @@ class Controller
         }
         elseif(!preg_match("#[A-Z]+#",$password)) {
             $passwordErr = "Your Password Must Contain At Least 1 Capital Letter!";
-        }
-        elseif(!preg_match("#[a-z]+#",$password)) {
-            $passwordErr = "Your Password Must Contain At Least 1 Lowercase Letter!";
         } */
 
         return false;
     }
+
 }

@@ -54,7 +54,7 @@ class Db
 		}
 	}
 	
-	public function select(Array $data){
+	public function select(array $data){
 		$sql = "SELECT " . implode(', ', array_keys($this->columns)) . " FROM ".$this->table." WHERE ";
 		
 		foreach ($data as $key => $value) {

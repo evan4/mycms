@@ -28,7 +28,8 @@ class View
 
     }
 
-    public function render($data = null, $meta = null){
+    public function render($data = null, $meta = null)
+    {
         if(is_array($data)){
             extract($data);
         }

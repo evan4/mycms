@@ -4,6 +4,7 @@ jQuery(function($) {
     var email = $('#email'),
         emailpattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         emailTooltip= "Введите корректный email",
+
         result = $('.result');
        
     $.ajaxSetup({
@@ -20,20 +21,23 @@ jQuery(function($) {
         }
     }
 
-    $('#form-login').on('submit', function (e) {
+    $('#form-reg').on('submit', function (e) {
         e.preventDefault();
 
         result.empty();
 
         var fValid;
         fValid = true;
+
+
         fValid = fValid && checkReg(email, emailpattern, emailTooltip);
+
         var data = $(this).serializeArray();
         data[data.length] = { "name": "csrf", "value": $('#csrf').val() };
 
         if (fValid) {
             $.ajax({
-                url: '/auth',
+                url: '/singup',
                 data: data
             })
             .done(function (res) {

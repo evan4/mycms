@@ -1,6 +1,6 @@
 <div class="container">
 
-	<form id="form-login" class="form-signin" action="" method="post">
+	<form id="form-reg" class="form-signin" action="" method="post">
 		<div class="text-center mb-4">
 			<h1 class="h3 mb-3 font-weight-normal">Sing up</h1>
 		</div>

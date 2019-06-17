@@ -20,7 +20,8 @@ class Session {
      * Constructor
      *
      */
-	function __construct() {
+    public function __construct() 
+    {
         
         if (ini_get('session.gc_maxlifetime') < $this->settings['lifetime']) {
             ini_set('session.gc_maxlifetime', $this->settings['lifetime']);

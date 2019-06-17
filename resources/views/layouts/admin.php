@@ -12,7 +12,9 @@
     <script src="/js/vendors/bootstrap.min.js"></script>
 </head>
 <body>
-<?php echo $content; ?>
-
+<div class="container">
+    <?php require_once VIEWS.'/partials/header.php'; ?>
+    <?php echo $content; ?>
+</div>
 </body>
 </html>

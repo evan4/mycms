@@ -25,9 +25,6 @@
 
 		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
 
-		<p>
-			<a href="/">back to home page</a>
-		</p>
 	</form>
 	
 	<div class="row">

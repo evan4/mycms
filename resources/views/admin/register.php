@@ -26,9 +26,9 @@
 		</div>
 
 		<div class="form-group">
-			<label for="email">Email address:</label>
+			<label for="email">Email:</label>
 			<input type="email" id="email" name="email" class="form-control" 
-				placeholder="Email address" required>
+				placeholder="Email" required>
 		</div>
 
 		<div class="form-group">
@@ -45,9 +45,6 @@
 
 		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
 
-		<p class="text-center">
-			<a href="/">back to home page</a>
-		</p>
 	</form>
 	
 	<div class="row">

@@ -40,7 +40,9 @@ class AdminController extends Controller
         $data =[
            'csrf' => $this->csrfExists()
         ];
+
         $home = new View('admin@login', 'admin');
+
         $home->render(compact('meta', 'data'));
     }
 
@@ -50,12 +52,10 @@ class AdminController extends Controller
         $data = [];
         $error = [];
         
-        if(isset($PostArgs['csrf']) && !empty($PostArgs['csrf'])){
-            if ( !hash_equals($this->session->get('csrf'), $PostArgs['csrf']) ) {
-                $error['token'] = 'Ошибка токена';
-            }
-        }else{
-            $error['token'] = 'Ошибка токена';
+        $token = $this->csrfError($PostArgs['csrf']);
+        
+        if(!$token){
+            $error['token'] = $token;
         }
 
         $data['email'] = $this->checkEmail($PostArgs['email']);
@@ -107,13 +107,47 @@ class AdminController extends Controller
         ];
 
         $home = new View('admin@register', 'admin');
+
         $home->render(compact('meta', 'data'));
     }
 
     public function singup()
     {
+        $PostArgs = filter_input_array(INPUT_POST);
+        $data = [];
+        $error = [];
+        
+        $token = $this->csrfError($PostArgs['csrf']);
 
-        //password_hash("rasmuslerdorf", PASSWORD_DEFAULT);
+        if(!$token){
+            $error['token'] = $token;
+        }
+
+        $data['email'] = $this->checkEmail($PostArgs['email']);
+
+        if(!$data['email']){
+            $error['email'] = 'Email некорректен';
+        }
+
+        $password = $this->password($PostArgs['password']);
+
+        if(!$password){
+            $error['password'] = 'Пароль некорректен';
+        }
+
+        if( $error ){
+            echo json_encode($error);
+            die();
+        }
+
+        $user = new User();
+        
+        $res = $user->saveUser($data);
+
+        //password_verify("rasmuslerdorf", PASSWORD_DEFAULT);
+
+        echo json_encode($error);
+        die();
     }
 
     public function forgoPassword()
@@ -125,6 +159,7 @@ class AdminController extends Controller
             'csrf' => $this->csrfExists()
         ];
         $home = new View('admin@forgot', 'admin');
+
         $home->render(compact('meta', 'data'));
     }
 
@@ -138,10 +173,26 @@ class AdminController extends Controller
     {
         if($this->session->exists('csrf')){
             $token = $this->session->get('csrf');
-         }else{
-             $token = token();
-             $this->session->set('csrf', $token);
-         }
-         return $token;
+        }else{
+            $token = token();
+            $this->session->set('csrf', $token);
+        }
+
+        return $token;
+    }
+
+    private function csrfError()
+    {
+        $error = null;
+
+        if(isset($csrf) && !empty($csrf)){
+            if ( !hash_equals($this->session->get('csrf'), $csrf) ) {
+                $error = 'Ошибка токена';
+            }
+        }else{
+            $error = 'Ошибка токена';
+        }
+
+        return $error;
     }
 }

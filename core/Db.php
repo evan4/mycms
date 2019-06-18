@@ -22,7 +22,9 @@ class Db
 		}
 		
 		try {
-			$this->pdo = new PDO($db['dsn'],$db['user'],$db['pass'], array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
+			$this->pdo = new PDO($db['dsn'], $db['user'], $db['pass'], array(
+				PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
+			));
 		} catch (PDOException $e) {
 			echo 'Connection failed: ' . $e->getMessage();
 			exit;
@@ -37,7 +39,8 @@ class Db
 	*	@return int
 	*	@param $val scalar
 	**/
-	private function type($val) {
+	private function type($val) 
+	{
 		switch (gettype($val)) {
 			case 'NULL':
 				return PDO::PARAM_NULL;
@@ -54,7 +57,8 @@ class Db
 		}
 	}
 	
-	public function select(array $data){
+	public function select(array $data)
+	{
 		$sql = "SELECT " . implode(', ', array_keys($this->columns)) . " FROM ".$this->table." WHERE ";
 		
 		foreach ($data as $key => $value) {
@@ -68,13 +72,24 @@ class Db
 		
 		$stmt = $this->pdo->prepare($sql);
 
+		$this->pdo->beginTransaction();
+
 		foreach ($data as $key => $value) {
 			$stmt->bindValue(":$key", $value, $this->type($this->columns[$key]) );
 		}
 
 		$stmt->execute();
+		
+		$this->pdo->commit();
+
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
+
+	public function insert(array $data)
+	{
+		
+		return $data;
+	}	
 
 	private function columnsmeta()
 	{

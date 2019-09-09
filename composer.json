@@ -24,7 +24,7 @@
 			"Mycms\\": "core/",
 			"App\\": "app/"
 		},
-		"files": []
+		"files": ["core/helpers.php"]
 	},
 	"config": {
 		"preferred-install": "dist",

@@ -14,17 +14,13 @@ class Db
  
 	public function __construct($table) 
 	{
-		$config_db = CONF . "config_db.php";
-		if (is_file($config_db)) {
-			require_once $config_db;
-		} else {
-			throw new Exception("Файл не найден");
-		}
-		
 		try {
-			$this->pdo = new PDO($db['dsn'], $db['user'], $db['pass'], array(
+			$this->pdo = new PDO(getenv('DB_DRIVER').":host=".getenv('HOST').";dbname=".getenv('DB_NAME'),
+			getenv('DB_USERNAME'), 
+			getenv('DB_PASSWORD'), 
+			[
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
-			));
+			]);
 		} catch (PDOException $e) {
 			echo 'Connection failed: ' . $e->getMessage();
 			exit;

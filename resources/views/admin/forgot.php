@@ -5,7 +5,7 @@
 			<h1 class="h3 mb-3 font-weight-normal">Let's get you into your account</h1>
 		</div>
 
-		<input type="hidden" id="csrf" name="csrf" value="<?= csrf(); ?>">
+		<input type="hidden" name="csrf" value="<?= csrf(); ?>">
 		
 		<div class="form-group">
 			<label for="email">Sign-in email address:</label>

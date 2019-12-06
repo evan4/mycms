@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Дек 06 2019 г., 12:52
+-- Время создания: Дек 06 2019 г., 18:34
 -- Версия сервера: 5.7.20-0ubuntu0.16.04.1
 -- Версия PHP: 7.2.22-1+ubuntu16.04.1+deb.sury.org+1
 
@@ -42,7 +42,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `recovery`) VALUES
-(1, 'admin', 'ivinn@mail.ru', '$2y$10$8P8D/seyDMPhmQRFFnG7v.HujRFM8pG7LPsUW29KNXm3NDnqbKW02', 'admin', '');
+(1, 'admin', 'ivinn@mail.ru', '$2y$10$rWnQNkM222Nq7JIwSZMBouVE//9dYyUoWQ3UjJUjNXQZH40TDj2Qa', 'admin', ''),
+(2, 'gustav', 'gustav4mc@yandex.com', '$2y$10$g0tHq70RkoK2GJT7qIfAmeV2bGOKf3tZ1YS1Ze4jygNLlf3hJ4qBO', 'user', NULL),
+(4, 'gustav1', 'gustav4mc1@yandex.com', '$2y$10$DOHZWnOZguA2jZNXUw0jbOXTS3Ah/ttPIVHq6995iJL2Y2VX.r2WS', 'user', NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -64,7 +66,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

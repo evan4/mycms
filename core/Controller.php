@@ -74,7 +74,7 @@ class Controller
                     break;
             }
         }
-
+        
         return $result;
         
     }

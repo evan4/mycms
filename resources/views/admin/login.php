@@ -5,16 +5,18 @@
 			<h1 class="h3 mb-3 font-weight-normal">Login</h1>
 		</div>
 
-		<input type="hidden" id="csrf" name="csrf" value="<?= csrf(); ?>">
+		<input type="hidden" name="csrf" value="<?= csrf(); ?>">
 
 		<div class="form-group">
 			<label for="email">Email address:</label>
-			<input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+			<input type="email" id="email" name="email" class="form-control" 
+				placeholder="Email address" required>
 		</div>
 
 		<div class="form-group">
 			<label for="password">Password:</label>
-			<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+			<input type="password" id="password" name="password" class="form-control"
+				placeholder="Password" required>
 		</div>
 
 		<p><a href="/forgot">Trouble signing in?</a></p>

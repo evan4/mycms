@@ -20,6 +20,18 @@ jQuery(function($) {
         }
     }
 
+    function errorField(o, tooltip){
+        var position = o.position();
+        if($(o).next( ".text-danger" ).length>0){
+            $(o).next( ".text-danger" ).slideDown();
+        }else{
+            $("<span class='text-danger' style='top: "+(position.top + 30)+"px'>"+tooltip+"</span>").insertAfter(o); 
+            $(o).next( ".text-danger" ).slideDown();
+        }
+      o.addClass("errorField");
+      return false;
+    }
+
     $('#form-login').on('submit', function (e) {
         e.preventDefault();
 
@@ -36,10 +48,8 @@ jQuery(function($) {
                 data: data
             })
             .done(function (res) {
-                console.log(res);
                 
                 if (!Object.keys(res).length) {
-                    console.log(Object.keys(res).length);
                     window.location ='/admin';
                 }
                 output(res);

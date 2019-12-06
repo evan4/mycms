@@ -33,8 +33,6 @@ class Db
 
 	/**
 	*	Map data type of argument to a PDO constant
-	*	@return int
-	*	@param $val scalar
 	**/
 	private function type($val) 
 	{
@@ -61,19 +59,22 @@ class Db
 		foreach ($data as $key => $value) {
 			//last element
 			if (!next($data)) {
-				$sql .= "$key = :$key ";
+				$sql .= "$key = ? ";
 			}else{
-				$sql .= "$key = :$key AND ";
+				$sql .= "$key = ? AND ";
 			}
 		}
 		
 		$stmt = $this->pdo->prepare($sql);
 
-		$this->pdo->beginTransaction();
-
+		$index = 1;
 		foreach ($data as $key => $value) {
-			$stmt->bindValue(":$key", $value, $this->type($this->columns[$key]) );
+			//last element
+			$stmt->bindValue($index, $value, $this->type($this->columns[$key]) );
+			$index+=1;
 		}
+
+		$this->pdo->beginTransaction();
 
 		$stmt->execute();
 		
@@ -84,27 +85,35 @@ class Db
 
 	public function insert(array $data)
 	{
-		$fields = implode(', ', array_keys($this->columns));
-	
+		$fields = implode(', ', array_keys($data));
+		
 		$sql = "INSERT INTO " .$this->table. " (". $fields . ") VALUES (";
 
 		foreach ($data as $value) {
 			//last element
 			if (!next($data)) {
-				$sql .= "?, ";
-			}else{
 				$sql .= "?)";
+			}else{
+				$sql .= "?, ";
 			}
 		}
-
+		
 		$stmt = $this->pdo->prepare($sql);
 
 		try {
 			$this->pdo->beginTransaction();
 
-			$res = $stmt->execute(array_values($data));
+			$index = 1;
+			foreach ($data as $key => $value) {
+				//last element
+				$stmt->bindValue($index, $value, $this->type($this->columns[$key]) );
+				$index+=1;
+			}
+
+			$res = $stmt->execute();
 
 			$this->pdo->commit();
+
 			return $res;
 
 		} catch (Exception $e) {

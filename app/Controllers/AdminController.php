@@ -32,7 +32,6 @@ class AdminController extends Controller
 
     public function login()
     {
-        //if($this->session->exists('user')) redirect('/');
         $meta = [
             'title' => 'Login'
         ];
@@ -60,11 +59,10 @@ class AdminController extends Controller
         $error = [];
 
         if($res){
-            
-            if(!password_verify( $validation['data']['password'], $res['password'] )){
-                $error['password'] = 'Неверные логин или пароль';
-            }else{
+            if(password_verify( $validation['data']['password'], $res['password'] )){
                 $this->session->set('user', $res['username']);
+            }else{
+                $error['password'] = 'Неверные логин или пароль';
             }
             
         }else{
@@ -95,40 +93,29 @@ class AdminController extends Controller
     {
         if(!$this->checkAjax()) redirect('/');
 
-        $PostArgs = filter_input_array(INPUT_POST);
-        $data = [];
-        $error = [];
+        $validation = $this->validation(filter_input_array(INPUT_POST));
         
-        $token = $this->csrfError($PostArgs['csrf']);
-        
-        if($token){
-            $error['token'] = $token;
-        }
-
-        $data['username'] = $this->sanitizeText($PostArgs['username']);
-
-        $data['email'] = $this->checkEmail($PostArgs['email']);
-
-        if(!$data['email']){
-            $error['email'] = 'Email некорректен';
-        }
-
-        $password = $this->sanitizePassword($PostArgs['password']);
-
-        if(!$password){
-            $error['password'] = 'Пароль некорректен';
-        }
-
-        if( $error ){
-            echo json_encode($error);
+        if( $validation['errors'] ){
+            echo json_encode($validation['errors']);
             die();
         }
 
+        $validation['data']['password'] = password_hash( 
+            $validation['data']['password'],  
+            PASSWORD_DEFAULT
+        );
+
         $user = new User();
         
-        $res = $user->saveUser($data);
+        $res = $user->saveUser($validation['data']);
+        
+        $error = [];
 
-        //password_verify("rasmuslerdorf", PASSWORD_DEFAULT);
+        if($res){
+            $this->session->set('user', $validation['data']['username']);
+        }else {
+            $error['registration'] = 'Произошла ошибка.';
+        }
 
         echo json_encode($error);
         die();
@@ -175,8 +162,6 @@ class AdminController extends Controller
         $res = $user->getUser($data);
         
         if($res){
-            
-            
             
         }else{
             $error['password'] = 'Данного email нет в базе';

@@ -4,7 +4,7 @@ namespace Mycms;
 
 class Controller
 {
-    public function text($text)
+    public function sanitizeText($text)
     {
        return filter_var( $text, FILTER_SANITIZE_SPECIAL_CHARS);
     }
@@ -12,29 +12,85 @@ class Controller
     public function checkEmail($email)
     {
         $filteredEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
+        
         if ($filteredEmail) {
             return filter_var($filteredEmail, FILTER_SANITIZE_EMAIL);
-        }else{
-            return null;
         }
+
+        return null;
     }
 
-    public function password($text)
+    public function sanitizePassword($text)
     {
-        $pass = $this->text( $text );
+        $pass = $this->sanitizeText( $text );
 
         if(strlen($pass) >= 4 ){
             return $pass;
         }
 
-      /*   elseif(!preg_match("#[0-9]+#",$password)) {
-            $passwordErr = "Your Password Must Contain At Least 1 Number!";
-        }
-        elseif(!preg_match("#[A-Z]+#",$password)) {
-            $passwordErr = "Your Password Must Contain At Least 1 Capital Letter!";
-        } */
-
         return false;
     }
 
+    public function checkAjax()
+    {
+        if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+            return true;
+        }
+        
+        return false;
+    }
+
+    public function validation(array $data)
+    {
+        $result = [
+            'data' => [],
+            'errors' => []
+        ];
+        
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'csrf':
+                    if($this->checkToken($value)){
+                        $result['errors'][$key] = $this->checkToken($value);
+                    }
+                    break;
+                case 'email':
+                    if($this->checkEmail($value)){
+                        $result['data'][$key] = $value;
+                    }else {
+                        $result['errors'][$key] = 'Email некорректен';
+                    }
+                    break;
+                case 'password':
+                    if($this->sanitizePassword($value)){
+                        $result['data'][$key] = $value;
+                    }else{
+                        $result['errors'][$key] = 'Пароль некорректен';
+                    }
+                    break;
+                default:
+                    $result['data'][$key] = $value;
+                    break;
+            }
+        }
+
+        return $result;
+        
+    }
+
+    private function checkToken($token)
+    {
+        $error = null;
+
+        if(isset($token) && !empty($token)){
+            if ( !hash_equals($this->session->get('csrf'), $token) ) {
+                $error = 'Ошибка токена';
+            }
+        }else{
+            $error = 'Ошибка токена';
+        }
+
+        return $error;
+    }
 }

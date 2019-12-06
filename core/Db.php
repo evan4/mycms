@@ -84,8 +84,34 @@ class Db
 
 	public function insert(array $data)
 	{
+		$fields = implode(', ', array_keys($this->columns));
+	
+		$sql = "INSERT INTO " .$this->table. " (". $fields . ") VALUES (";
+
+		foreach ($data as $value) {
+			//last element
+			if (!next($data)) {
+				$sql .= "?, ";
+			}else{
+				$sql .= "?)";
+			}
+		}
+
+		$stmt = $this->pdo->prepare($sql);
+
+		try {
+			$this->pdo->beginTransaction();
+
+			$res = $stmt->execute(array_values($data));
+
+			$this->pdo->commit();
+			return $res;
+
+		} catch (Exception $e) {
+			$this->pdo->rollBack();
+			echo "Failed: " . $e->getMessage();
+		}
 		
-		return $data;
 	}	
 
 	private function columnsmeta()

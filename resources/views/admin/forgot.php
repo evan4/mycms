@@ -2,25 +2,20 @@
 
 	<form id="form-login" class="form-signin" action="" method="post">
 		<div class="text-center mb-4">
-			<h1 class="h3 mb-3 font-weight-normal">Login</h1>
-			<p>Build form controls with floating labels via the
-				<code>:placeholder-shown</code> pseudo-element.
-				<a href="https://caniuse.com/#feat=css-placeholder-shown">Works in latest Chrome, Safari, and Firefox.</a>
-			</p>
+			<h1 class="h3 mb-3 font-weight-normal">Let's get you into your account</h1>
 		</div>
 
+		<input type="hidden" id="csrf" name="csrf" value="<?= csrf(); ?>">
+		
 		<div class="form-group">
-			<label for="email">Email address:</label>
-			<input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+			<label for="email">Sign-in email address:</label>
+			<input type="email" id="email" name="email" class="form-control"
+				 placeholder="Email address" required autofocus>
 		</div>
 
-		<input type="hidden" id="csrf" name="csrf" value="<?= $data['csrf']; ?>">
+		<input class="btn btn-lg btn-primary btn-block" 
+			type="submit" value="Recovery password"/>
 
-		<input class="btn btn-lg btn-primary btn-block" type="submit">Recovery password</input>
-
-		<p class="text-center">
-			<a href="/">back to home page</a>
-		</p>
 	</form>
 	
 	<div class="row">

@@ -37,54 +37,34 @@ class AdminController extends Controller
             'title' => 'Login'
         ];
 
-        $data =[
-           'csrf' => $this->csrfExists()
-        ];
-
         $home = new View('admin@login', 'admin');
 
-        $home->render(compact('meta', 'data'));
+        $home->render(compact('meta'));
     }
 
     public function auth()
     {
-        $PostArgs = filter_input_array(INPUT_POST);
-        $data = [];
-        $error = [];
+        if(!$this->checkAjax()) redirect('/');
+
+        $validation = $this->validation(filter_input_array(INPUT_POST));
         
-        $token = $this->csrfError($PostArgs['csrf']);
-        
-        if(!$token){
-            $error['token'] = $token;
-        }
-
-        $data['email'] = $this->checkEmail($PostArgs['email']);
-
-        if(!$data['email']){
-            $error['email'] = 'Email некорректен';
-        }
-
-        $password = $this->password($PostArgs['password']);
-
-        if(!$password){
-            $error['password'] = 'Пароль некорректен';
-        }
-
-        if( $error ){
-            echo json_encode($error);
+        if( $validation['errors'] ){
+            echo json_encode($validation['errors']);
             die();
         }
 
         $user = new User();
         
-        $res = $user->getUser($data);
+        $res = $user->getUser([ 'email' => $validation['data']['email'] ]);
         
+        $error = [];
+
         if($res){
             
-            if(!password_verify( $password, $res['password'] )){
+            if(!password_verify( $validation['data']['password'], $res['password'] )){
                 $error['password'] = 'Неверные логин или пароль';
             }else{
-                $this->session->set('user', $res['name']);
+                $this->session->set('user', $res['username']);
             }
             
         }else{
@@ -101,29 +81,31 @@ class AdminController extends Controller
         $meta = [
             'title' => 'Sing up'
         ];
-        
-        $data =[
-           'csrf' => $this->csrfExists()
-        ];
 
         $home = new View('admin@register', 'admin');
 
-        $home->render(compact('meta', 'data'));
+        $home->render(compact('meta'));
     }
 
+    /**
+     * register new user via ajax
+     *
+     */
     public function singup()
     {
+        if(!$this->checkAjax()) redirect('/');
+
         $PostArgs = filter_input_array(INPUT_POST);
         $data = [];
         $error = [];
         
         $token = $this->csrfError($PostArgs['csrf']);
         
-        if(!$token){
+        if($token){
             $error['token'] = $token;
         }
 
-        $data['username'] = $this->text($PostArgs['username']);
+        $data['username'] = $this->sanitizeText($PostArgs['username']);
 
         $data['email'] = $this->checkEmail($PostArgs['email']);
 
@@ -131,7 +113,7 @@ class AdminController extends Controller
             $error['email'] = 'Email некорректен';
         }
 
-        $password = $this->password($PostArgs['password']);
+        $password = $this->sanitizePassword($PostArgs['password']);
 
         if(!$password){
             $error['password'] = 'Пароль некорректен';
@@ -152,17 +134,56 @@ class AdminController extends Controller
         die();
     }
 
-    public function forgoPassword()
+    public function forgot()
     {
         $meta = [
             'title' => 'Recovery password'
         ];
-        $data =[
-            'csrf' => $this->csrfExists()
-        ];
+
         $home = new View('admin@forgot', 'admin');
 
-        $home->render(compact('meta', 'data'));
+        $home->render(compact('meta'));
+    }
+
+    public function recoveryPassword()
+    {
+        if(!$this->checkAjax()) redirect('/');
+
+        $PostArgs = filter_input_array(INPUT_POST);
+        $data = [];
+        $error = [];
+        
+        $token = $this->csrfError($PostArgs['csrf']);
+        
+        if($token){
+            $error['token'] = $token;
+        }
+
+        $data['email'] = $this->checkEmail($PostArgs['email']);
+
+        if(!$data['email']){
+            $error['email'] = 'Email некорректен';
+        }
+
+        if( $error ){
+            echo json_encode($error);
+            die();
+        }
+        
+        $user = new User();
+        
+        $res = $user->getUser($data);
+        
+        if($res){
+            
+            
+            
+        }else{
+            $error['password'] = 'Данного email нет в базе';
+        }
+
+        echo json_encode($error);
+        die();
     }
 
     public function logout()
@@ -170,24 +191,12 @@ class AdminController extends Controller
         $this->session->destroy();
         redirect('/');
     }
-    
-    private function csrfExists()
-    {
-        if($this->session->exists('csrf')){
-            $token = $this->session->get('csrf');
-        }else{
-            $token = token();
-            $this->session->set('csrf', $token);
-        }
 
-        return $token;
-    }
-
-    private function csrfError()
+    private function csrfError($token)
     {
         $error = null;
 
-        if(isset($csrf) && !empty($csrf)){
+        if(isset($token) && !empty($token)){
             if ( !hash_equals($this->session->get('csrf'), $csrf) ) {
                 $error = 'Ошибка токена';
             }

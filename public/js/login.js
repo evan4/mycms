@@ -29,7 +29,6 @@ jQuery(function($) {
         fValid = true;
         fValid = fValid && checkReg(email, emailpattern, emailTooltip);
         var data = $(this).serializeArray();
-        data[data.length] = { "name": "csrf", "value": $('#csrf').val() };
 
         if (fValid) {
             $.ajax({

@@ -5,23 +5,19 @@
 			<h1 class="h3 mb-3 font-weight-normal">Login</h1>
 		</div>
 
+		<input type="hidden" id="csrf" name="csrf" value="<?= csrf(); ?>">
+
 		<div class="form-group">
 			<label for="email">Email address:</label>
 			<input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
 		</div>
-
-		<input type="hidden" id="csrf" name="csrf" value="<?= $data['csrf']; ?>">
 
 		<div class="form-group">
 			<label for="password">Password:</label>
 			<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
 		</div>
 
-		<div class="checkbox mb-3">
-			<label>
-				<input type="checkbox" name="remember" value="remember-me"> Remember me
-			</label>
-		</div>
+		<p><a href="/forgot">Trouble signing in?</a></p>
 
 		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
 

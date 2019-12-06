@@ -14,27 +14,9 @@
 		</div>
 
 		<div class="form-group">
-			<label for="first_name">First name:</label>
-			<input type="text" id="first_name" name="first_name" class="form-control" 
-				placeholder="First name" required autofocus>
-		</div>
-
-		<div class="form-group">
-			<label for="last_name">Last name:</label>
-			<input type="text" id="last_name" name="last_name" class="form-control" 
-				placeholder="Last name">
-		</div>
-
-		<div class="form-group">
 			<label for="email">Email:</label>
 			<input type="email" id="email" name="email" class="form-control" 
 				placeholder="Email" required>
-		</div>
-
-		<div class="form-group">
-			<label for="description">Description:</label>
-			<textarea name="description" id="description" class="form-control" 
-				cols="10" rows="3"></textarea>
 		</div>
 
 		<div class="form-group">

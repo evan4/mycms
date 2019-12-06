@@ -118,10 +118,12 @@ class AdminController extends Controller
         $error = [];
         
         $token = $this->csrfError($PostArgs['csrf']);
-
+        
         if(!$token){
             $error['token'] = $token;
         }
+
+        $data['username'] = $this->text($PostArgs['username']);
 
         $data['email'] = $this->checkEmail($PostArgs['email']);
 

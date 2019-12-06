@@ -83,9 +83,10 @@ class Session {
      */
     public function set($key, $value)
     {
-        $_SESSION[$key] = $value;
-
-        return $this;
+        if(!empty($key) && !empty($value)){
+            return $_SESSION[$key] = $value;
+        }
+        throw new Exception("key and value are required");
     }
 
     /**

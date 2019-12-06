@@ -15,7 +15,8 @@ class Db
 	public function __construct($table) 
 	{
 		try {
-			$this->pdo = new PDO(getenv('DB_DRIVER').":host=".getenv('HOST').";dbname=".getenv('DB_NAME'),
+			$this->pdo = new PDO(getenv('DB_DRIVER').":host=".getenv('HOST').";charset=utf8;
+				dbname=".getenv('DB_NAME'),
 			getenv('DB_USERNAME'), 
 			getenv('DB_PASSWORD'), 
 			[

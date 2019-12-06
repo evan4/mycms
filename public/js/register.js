@@ -29,7 +29,6 @@ jQuery(function($) {
         var fValid;
         fValid = true;
 
-
         fValid = fValid && checkReg(email, emailpattern, emailTooltip);
 
         var data = $(this).serializeArray();

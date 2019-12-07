@@ -69,7 +69,7 @@ jQuery(function($) {
         fValid = true;
 
         fValid = fValid && checkReg(email, emailpattern, emailTooltip);
-
+        
         var data = $(this).serializeArray();
 
         if (fValid) {

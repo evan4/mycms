@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use Mycms\Controller;
 use Mycms\View;
+use App\Models\User;
 
-class HomeController
+class HomeController extends Controller
 {
 
     public function index()
@@ -13,8 +15,11 @@ class HomeController
             'title' => 'Home'
         ];
 
+        $user = new User();
+        $users = $user->getUsers(['username', 'email'], []);
+       
         $home = new View('home@index');
 
-        $home->render(compact('meta'));
+        $home->render(compact('meta', 'users'));
     }
 }

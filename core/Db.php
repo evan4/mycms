@@ -52,26 +52,34 @@ class Db
 		}
 	}
 	
-	public function select(array $data)
+	public function select(array $params = null, array $data = null)
 	{
-		$sql = "SELECT " . implode(', ', array_keys($this->columns)) . " FROM ".$this->table." WHERE ";
-		
-		foreach ($data as $key => $value) {
-			//last element
-			if (!next($data)) {
-				$sql .= "$key = ? ";
-			}else{
-				$sql .= "$key = ? AND ";
+		$params = $params ? implode(', ', array_values($params)) 
+			: implode(', ', array_keys($this->columns));
+
+		$sql = "SELECT " . $params . " FROM ".$this->table;
+
+		if($data){
+			$sql .=  " WHERE ";
+			foreach ($data as $key => $value) {
+				//last element
+				if (!next($data)) {
+					$sql .= "$key = ? ";
+				}else{
+					$sql .= "$key = ? AND ";
+				}
 			}
 		}
 		
 		$stmt = $this->pdo->prepare($sql);
 
-		$index = 1;
-		foreach ($data as $key => $value) {
-			//last element
-			$stmt->bindValue($index, $value, $this->type($this->columns[$key]) );
-			$index+=1;
+		if($data){
+			$index = 1;
+			foreach ($data as $key => $value) {
+				//last element
+				$stmt->bindValue($index, $value, $this->type($this->columns[$key]) );
+				$index+=1;
+			}
 		}
 
 		$this->pdo->beginTransaction();
@@ -81,6 +89,45 @@ class Db
 		$this->pdo->commit();
 
 		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
+	public function selectAll(array $params = null, array $data = null)
+	{
+		$params = $params ? implode(', ', array_values($params)) 
+			: implode(', ', array_keys($this->columns));
+
+		$sql = "SELECT " . $params . " FROM ".$this->table;
+
+		if($data){
+			$sql .=  " WHERE ";
+			foreach ($data as $key => $value) {
+				//last element
+				if (!next($data)) {
+					$sql .= "$key = ? ";
+				}else{
+					$sql .= "$key = ? AND ";
+				}
+			}
+		}
+		
+		$stmt = $this->pdo->prepare($sql);
+
+		if($data){
+			$index = 1;
+			foreach ($data as $key => $value) {
+				//last element
+				$stmt->bindValue($index, $value, $this->type($this->columns[$key]) );
+				$index+=1;
+			}
+		}
+
+		$this->pdo->beginTransaction();
+
+		$stmt->execute();
+		
+		$this->pdo->commit();
+
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function insert(array $data)

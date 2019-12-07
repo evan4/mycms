@@ -19,8 +19,8 @@
 				placeholder="Password" required>
 		</div>
 
-		<p><a href="/forgot">Trouble signing in?</a></p>
-
+		<!-- <p><a href="/forgot">Trouble signing in?</a></p>
+ -->
 		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
 
 	</form>

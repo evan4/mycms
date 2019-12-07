@@ -33,6 +33,33 @@ jQuery(function($) {
       return false;
     }
 
+    $('#email').on('change', function () { 
+        result.empty();
+
+        var fValid;
+        fValid = true;
+
+        fValid = fValid && checkReg(email, emailpattern, emailTooltip);
+
+        var data = $(this).serializeArray();
+
+        if (fValid) {
+            $.ajax({
+                url: '/user-exists',
+                data: data
+            })
+            .done(function (res) {
+                if (Object.keys(res).length) {
+                    output(res);
+                }
+                
+            })
+            .fail(function (error) {
+                
+            });
+        }
+    });
+
     $('#form-reg').on('submit', function (e) {
         e.preventDefault();
 

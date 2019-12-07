@@ -92,9 +92,17 @@ class AdminController extends Controller
     public function singup()
     {
         if(!$this->checkAjax()) redirect('/');
-
+        
         $validation = $this->validation(filter_input_array(INPUT_POST));
         
+        $user = new User();
+
+        $result = $user->getUser([ 'email' => $validation['data']['email'] ]);
+
+        if($result){
+            $validation['errors']['email_unique'] = 'There is same email in db';
+        }
+
         if( $validation['errors'] ){
             echo json_encode($validation['errors']);
             die();
@@ -104,8 +112,6 @@ class AdminController extends Controller
             $validation['data']['password'],  
             PASSWORD_DEFAULT
         );
-
-        $user = new User();
         
         $res = $user->saveUser($validation['data']);
         
@@ -118,6 +124,26 @@ class AdminController extends Controller
         }
 
         echo json_encode($error);
+        die();
+    }
+
+    public function userExists()
+    {
+        if(!$this->checkAjax()) redirect('/');
+        
+        $validation = $this->validation(filter_input_array(INPUT_POST));
+        
+        $user = new User();
+
+        $result = $user->getUser([ 'email' => $validation['data']['email'] ]);
+
+        if($result){
+            $validation['errors']['email_unique'] = 'There is same email in db';
+        }
+
+        if( $validation['errors'] ){
+            echo json_encode($validation['errors']);
+        }
         die();
     }
 

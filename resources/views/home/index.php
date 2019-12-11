@@ -1,21 +1,21 @@
 <h1>index</h1>
-<?php if(isset($users)){ ?>
+<?php if(isset($articles)){ ?>
 <table class="table">
   <thead>
     <tr>
-      <th>Username</th>
-      <th>Email</th>
+      <th>Title</th>
+      <th>Description</th>
     </tr>
   </thead>
   <tbody>
-  <?php foreach ($users as $user) { ?>
+  <?php foreach ($articles as $article) { ?>
     <tr>
-      <td><?=$user['username'];?></td>
-      <td><?=$user['email'];?></td>
+      <td><?=$article['title'];?></td>
+      <td><?=$article['description'];?></td>
     </tr>
     <?php } ?>
   </tbody>
 </table>
 <?php }else { ?>
-<p>There are no records in db</p>
+<p>There are no articles</p>
 <?php } ?>

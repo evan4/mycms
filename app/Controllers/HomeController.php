@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Mycms\Controller;
 use Mycms\View;
-use App\Models\User;
+use App\Models\Article;
 
 class HomeController extends Controller
 {
@@ -15,11 +15,11 @@ class HomeController extends Controller
             'title' => 'Home'
         ];
 
-        $user = new User();
-        $users = $user->getUsers(['username', 'email'], []);
+        $articles = new Article();
+        $articles = $articles->getArticles();
        
         $home = new View('home@index');
 
-        $home->render(compact('meta', 'users'));
+        $home->render(compact('meta', 'articles'));
     }
 }

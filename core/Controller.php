@@ -70,7 +70,13 @@ class Controller
                     }
                     break;
                 default:
-                    $result['data'][$key] = $value;
+                    
+                    if(is_int($value)) {
+                        $result['data'][$key] = intval($value);
+                    }else {
+                        $result['data'][$key] = $this->sanitizeText($value);
+                    }
+                   
                     break;
             }
         }

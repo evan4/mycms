@@ -5,26 +5,26 @@ namespace App\Models;
 use Mycms\Model;
 use Exception;
 
-class User
+class Article
 {
     private $db;
 
     public function __construct()
     {
-        $this->db = new Model('users');
+        $this->db = new Model('articles');
     }
 
-    public function getUser(array $data)
+    public function getArticle(array $data)
     {
         return $this->db->select($data);
     }
 
-    public function getUsers(array $params, array $data)
+    public function getArticles(array $params = null, array $data = null)
     {
         return $this->db->selectAll($params, $data);
     }
 
-    public function saveUser(array $data)
+    public function saveArticl(array $data)
     {
         return $this->db->insert($data);
     }

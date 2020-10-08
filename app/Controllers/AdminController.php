@@ -19,15 +19,17 @@ class AdminController extends Controller
 
     public function index()
     {
-        if(!$this->session->exists('user')) redirect('/login');
+        if(!$this->session->exists('username')) redirect('/login');
+        $username = $this->session->get('username');
+        $role = $this->session->get('role');
 
         $meta = [
             'title' => 'Dashboard'
         ];
 
         $home = new View('admin@index', 'dashboard');
-
-        $home->render(compact('meta'));
+        
+        $home->render(compact('meta', 'username', 'role'));
     }
 
     public function login()
@@ -54,13 +56,19 @@ class AdminController extends Controller
 
         $user = new User();
         
-        $res = $user->getUser([ 'email' => $validation['data']['email'] ]);
-        
+        $res = $user->getUser(
+            ['username','email', 'role', 'password'],
+            [ 'email' => $validation['data']['email'] ]
+        );
+       
         $error = [];
-
+        //var_dump($res);
         if($res){
+            
             if(password_verify( $validation['data']['password'], $res['password'] )){
-                $this->session->set('user', $res['username']);
+                $this->session->set('username', $res['username']);
+                $this->session->set('role', $res['role']);
+                
             }else{
                 $error['password'] = 'Неверные логин или пароль';
             }
@@ -97,7 +105,10 @@ class AdminController extends Controller
         
         $user = new User();
 
-        $result = $user->getUser([ 'email' => $validation['data']['email'] ]);
+        $result = $user->getUser(
+            ['username','email', 'role', 'password'],
+            [ 'email' => $validation['data']['email'] ]
+        );
 
         if($result){
             $validation['errors']['email_unique'] = 'There is same email in db';
@@ -118,7 +129,9 @@ class AdminController extends Controller
         $error = [];
 
         if($res){
-            $this->session->set('user', $validation['data']['username']);
+            $this->session->set('username', $validation['data']['username']);
+            $this->session->set('role', $validation['data']['role']);
+
         }else {
             $error['registration'] = 'Произошла ошибка.';
         }
@@ -135,7 +148,10 @@ class AdminController extends Controller
         
         $user = new User();
 
-        $result = $user->getUser([ 'email' => $validation['data']['email'] ]);
+        $result = $user->getUser(
+            ['username','email', 'password'],
+            [ 'email' => $validation['data']['email'] ]
+        );
 
         if($result){
             $validation['errors']['email_unique'] = 'There is same email in db';
@@ -185,7 +201,8 @@ class AdminController extends Controller
         
         $user = new User();
         
-        $res = $user->getUser($data);
+        $res = $user->getUser(
+            ['username','email', 'password'], $data);
         
         if($res){
             
@@ -199,7 +216,8 @@ class AdminController extends Controller
 
     public function logout()
     {
-        $this->session->destroy();
+        $this->session->delete('username');
+        $this->session->delete('role');
         redirect('/');
     }
 

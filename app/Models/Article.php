@@ -9,9 +9,11 @@ class Article
 {
     private $db;
 
+    private $table = 'articles';
+
     public function __construct()
     {
-        $this->db = new Model('articles');
+        $this->db = new Model($this->table);
     }
 
     public function getArticle(array $data)
@@ -24,7 +26,7 @@ class Article
         return $this->db->selectAll($params, $data);
     }
 
-    public function saveArticl(array $data)
+    public function saveArticle(array $data)
     {
         return $this->db->insert($data);
     }

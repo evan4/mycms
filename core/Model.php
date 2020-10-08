@@ -26,16 +26,17 @@ class Model
 			echo 'Connection failed: ' . $e->getMessage();
 			exit;
 		}
-		$this->table = $table; 
+		$this->table = $table;
 		$this->columnsmeta();
 		
 	}
 	
 	public function select(array $params = null, array $data = null)
 	{
+		
 		$params = $params ? implode(', ', array_values($params)) 
 			: implode(', ', array_keys($this->columns));
-
+		
 		$sql = "SELECT " . $params . " FROM ".$this->table;
 
 		if($data){

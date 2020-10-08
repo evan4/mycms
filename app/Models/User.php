@@ -14,12 +14,12 @@ class User
         $this->db = new Model('users');
     }
 
-    public function getUser(array $data)
+    public function getUser(array $params = null,array $data)
     {
-        return $this->db->select($data);
+        return $this->db->select($params,$data);
     }
 
-    public function getUsers(array $params, array $data)
+    public function getUsers(array $params = null, array $data = null)
     {
         return $this->db->selectAll($params, $data);
     }

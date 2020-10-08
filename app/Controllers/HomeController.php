@@ -17,7 +17,7 @@ class HomeController extends Controller
 
         $articles = new Article();
         $articles = $articles->getArticles();
-       
+        
         $home = new View('home@index');
 
         $home->render(compact('meta', 'articles'));

@@ -163,31 +163,14 @@ class Session {
 
     public function destroy()
     {
-		if ($this->getIsActive()) {
-
-            if ($this->getId()) {
-                // Удалить все переменные сессии
-                session_unset();
-                // Уничтожает все данные сессии
-                session_destroy();
-                //Записывает данные сессии и завершает её
-                session_write_close();
-    
-                if (ini_get('session.use_cookies')) {
-                    $params = session_get_cookie_params();
-                    setcookie(
-                        session_name(),
-                        '',
-                        time() - 4200,
-                        $params['path'],
-                        $params['domain'],
-                        $params['secure'],
-                        $params['httponly']
-                    );
-                }
-            }
-            $this->clear();
-		}
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+		session_destroy();
     }
 
 }

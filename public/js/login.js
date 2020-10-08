@@ -49,10 +49,12 @@ jQuery(function($) {
             })
             .done(function (res) {
                 
-                if (!Object.keys(res).length) {
-                    window.location ='/admin';
+                if (!res.length) {
+                    window.location.href = '/admin';
+                }else {
+                    output(res);
                 }
-                output(res);
+                
             })
             .fail(function (error) {
                 let res = {

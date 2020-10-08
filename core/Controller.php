@@ -31,7 +31,7 @@ class Controller
         return false;
     }
 
-    public function checkAjax()
+    public function checkAjax(): bool
     {
         if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
@@ -41,7 +41,7 @@ class Controller
         return false;
     }
 
-    public function validation(array $data)
+    public function validation(array $data): array
     {
         $result = [
             'data' => [],

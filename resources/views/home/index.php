@@ -1,5 +1,5 @@
 <h1>index</h1>
-<?php if(isset($articles)){ ?>
+<?php if(isset($articles) && !empty($articles)){ ?>
 <table class="table">
   <thead>
     <tr>

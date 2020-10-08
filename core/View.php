@@ -33,9 +33,11 @@ class View
         if(is_array($data)){
             extract($data);
         }
+
         if(is_array($meta)){
             extract($meta);
         }
+
         if(is_file($this->path)){
             ob_start();
             require_once $this->path;
@@ -46,11 +48,13 @@ class View
         }
 
         $layoutFile = VIEWS . "layouts/{$this->layout}.php";
+
         if (is_file($layoutFile)) {
             require_once $layoutFile;
         } else {
             throw new Exception("Не найден шаблон {$this->layout}");
         }
+        
     }
 
 }

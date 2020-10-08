@@ -22,7 +22,7 @@ class AdminController extends Controller
         if(!$this->session->exists('username')) redirect('/login');
         $username = $this->session->get('username');
         $role = $this->session->get('role');
-
+        
         $meta = [
             'title' => 'Dashboard'
         ];
@@ -45,8 +45,7 @@ class AdminController extends Controller
 
     public function auth()
     {
-        if(!$this->checkAjax()) redirect('/');
-
+        //if(!$this->checkAjax()) redirect('/');
         $validation = $this->validation(filter_input_array(INPUT_POST));
         
         if( $validation['errors'] ){
@@ -62,13 +61,13 @@ class AdminController extends Controller
         );
        
         $error = [];
-        //var_dump($res);
+        
         if($res){
             
             if(password_verify( $validation['data']['password'], $res['password'] )){
                 $this->session->set('username', $res['username']);
                 $this->session->set('role', $res['role']);
-                
+                redirect('/admin');
             }else{
                 $error['password'] = 'Неверные логин или пароль';
             }
@@ -76,7 +75,7 @@ class AdminController extends Controller
         }else{
             $error['password'] = 'Неверные логин или пароль';
         }
-        
+        redirect('/login');
         echo json_encode($error);
         die();
         

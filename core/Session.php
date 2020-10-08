@@ -170,7 +170,8 @@ class Session {
                 $params["secure"], $params["httponly"]
             );
         }
-		session_destroy();
+        session_destroy();
+        session_start();
     }
 
 }

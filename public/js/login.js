@@ -32,7 +32,7 @@ jQuery(function($) {
       return false;
     }
 
-    $('#form-login').on('submit', function (e) {
+   /*  $('#form-login').on('submit', function (e) {
         e.preventDefault();
 
         result.empty();
@@ -48,9 +48,9 @@ jQuery(function($) {
                 data: data
             })
             .done(function (res) {
-                
+                //debugger;
                 if (!res.length) {
-                    window.location.href = '/admin';
+                    $(location).attr('href',"http://mycms/admin");
                 }else {
                     output(res);
                 }
@@ -64,7 +64,7 @@ jQuery(function($) {
             });
         }
     });
-
+ */
     function output(data) {
         let list =  '<ul class="list-group mb-2">';
 

@@ -25,7 +25,7 @@ if (! function_exists('csrf')) {
 		$session = new Session();
 		$session->startSession();
 
-		if($session->exists('csrf')){
+		if($session->get('csrf') !== ''){
         $token = $session->get('csrf');
 		}else{
 				$token = generateToken();

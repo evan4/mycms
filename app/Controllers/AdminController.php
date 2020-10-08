@@ -49,6 +49,7 @@ class AdminController extends Controller
         $validation = $this->validation(filter_input_array(INPUT_POST));
         
         if( $validation['errors'] ){
+            redirect('/login');
             echo json_encode($validation['errors']);
             die();
         }

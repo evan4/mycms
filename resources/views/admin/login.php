@@ -5,8 +5,6 @@
 			<h1 class="h3 mb-3 font-weight-normal">Login</h1>
 		</div>
 
-		<input type="hidden" name="csrf" value="<?=csrf();?>">
-
 		<div class="form-group">
 			<label for="email">Email address:</label>
 			<input type="email" id="email" name="email" class="form-control" 

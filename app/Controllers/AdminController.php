@@ -45,7 +45,6 @@ class AdminController extends Controller
 
     public function auth()
     {
-        //if(!$this->checkAjax()) redirect('/');
         $validation = $this->validation(filter_input_array(INPUT_POST));
         
         if( $validation['errors'] ){

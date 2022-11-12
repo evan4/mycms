@@ -10,6 +10,8 @@ use App\Models\User;
 class AdminController extends Controller
 {
     public $session;
+    public $email_unique = 'There is user with same email';
+    public $email_absent = 'There is no user with this email';
 
     public function __construct()
     {
@@ -110,7 +112,7 @@ class AdminController extends Controller
         );
 
         if($result){
-            $validation['errors']['email_unique'] = 'There is same email in db';
+            $validation['errors']['email_unique'] = $this->$email_unique;
         }
 
         if( $validation['errors'] ){
@@ -153,7 +155,7 @@ class AdminController extends Controller
         );
 
         if($result){
-            $validation['errors']['email_unique'] = 'There is same email in db';
+            $validation['errors']['email_unique'] = $this->$email_unique;
         }
 
         if( $validation['errors'] ){
@@ -206,7 +208,7 @@ class AdminController extends Controller
         if($res){
             
         }else{
-            $error['password'] = 'Данного email нет в базе';
+            $error['password'] = $this->$email_absent;
         }
 
         echo json_encode($error);
